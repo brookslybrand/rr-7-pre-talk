@@ -1,25 +1,15 @@
 import { Suspense } from "react";
 import {
   Await,
-  data,
   useAsyncError,
   useAsyncValue,
   useLoaderData,
 } from "react-router";
-
-interface DeferredRouteLoaderData {
-  critical1: string;
-  critical2: string;
-  lazyResolved: Promise<string>;
-  lazy1: Promise<string>;
-  lazy2: Promise<string>;
-  lazy3: Promise<string>;
-  lazyError: Promise<string>;
-}
+import * as Route from "./+types.deferred";
 
 const rand = () => Math.round(Math.random() * 100);
 const resolve = (d: string, ms: number) =>
-  new Promise((r) => setTimeout(() => r(`${d} - ${rand()}`), ms));
+  new Promise<string>((r) => setTimeout(() => r(`${d} - ${rand()}`), ms));
 const reject = (d: Error | string, ms: number) =>
   new Promise((_, r) =>
     setTimeout(() => {
@@ -33,7 +23,7 @@ const reject = (d: Error | string, ms: number) =>
   );
 
 export async function loader() {
-  return data({
+  return {
     critical1: await resolve("Critical 1", 250),
     critical2: await resolve("Critical 2", 500),
     lazyResolved: Promise.resolve("Lazy Data immediately resolved - " + rand()),
@@ -41,11 +31,12 @@ export async function loader() {
     lazy2: resolve("Lazy 2", 1500),
     lazy3: resolve("Lazy 3", 2000),
     lazyError: reject(new Error("Kaboom!"), 2500),
-  });
+  };
 }
 
-export default function DeferredPage() {
-  let data = useLoaderData<typeof loader>();
+export default function DeferredPage({ loaderData }: Route.ComponentProps) {
+  const data = loaderData;
+
   return (
     <div>
       {/* Critical data renders immediately */}

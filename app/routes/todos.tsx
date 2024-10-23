@@ -1,18 +1,17 @@
 import {
-  ActionFunctionArgs,
   Form,
   Link,
   Outlet,
   useFetcher,
-  useLoaderData,
   useNavigation,
   useRouteError,
 } from "react-router";
 import { sleep } from "../lib";
 import { addTodo, deleteTodo, getTodos, Todos } from "../todos";
 import { useEffect, useRef, useState } from "react";
+import * as Route from "./+types.todos";
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   await sleep();
 
   let formData = await request.formData();
@@ -43,8 +42,7 @@ export async function loader() {
   return getTodos();
 }
 
-export default function TodosList() {
-  let todos = useLoaderData<typeof loader>();
+export default function TodosList({ loaderData }: Route.ComponentProps) {
   let navigation = useNavigation();
   let formRef = useRef<HTMLFormElement>(null);
 
@@ -74,7 +72,7 @@ export default function TodosList() {
             Click this link to force an error in the loader
           </Link>
         </li>
-        {Object.entries(todos).map(([id, todo]) => (
+        {Object.entries(loaderData).map(([id, todo]) => (
           <li key={id}>
             <TodoItem id={id} todo={todo} />
           </li>
