@@ -32,7 +32,7 @@ const reject = (d: Error | string, ms: number) =>
     }, ms)
   );
 
-export async function clientLoader() {
+export async function loader() {
   return data({
     critical1: await resolve("Critical 1", 250),
     critical2: await resolve("Critical 2", 500),
@@ -45,7 +45,7 @@ export async function clientLoader() {
 }
 
 export default function DeferredPage() {
-  let data = useLoaderData<typeof clientLoader>();
+  let data = useLoaderData<typeof loader>();
   return (
     <div>
       {/* Critical data renders immediately */}

@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     reactRouter({
       appDirectory: "src",
-      ssr: false,
+      ssr: true,
     }),
   ],
 });

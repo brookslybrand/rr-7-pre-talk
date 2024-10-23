@@ -2,12 +2,13 @@ export interface Todos {
   [key: string]: string;
 }
 
-const TODOS_KEY = "todos";
+// In-memory storage
+let todosStorage: Todos = {};
 
 export const uuid = () => Math.random().toString(36).substr(2, 9);
 
 export function saveTodos(todos: Todos): void {
-  return localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
+  todosStorage = { ...todos };
 }
 
 function initializeTodos(): Todos {
@@ -23,15 +24,10 @@ function initializeTodos(): Todos {
 }
 
 export function getTodos(): Todos {
-  let todos: Todos | null = null;
-  try {
-    // @ts-expect-error OK to throw here since we're catching
-    todos = JSON.parse(localStorage.getItem(TODOS_KEY));
-  } catch (e) {}
-  if (!todos) {
-    todos = initializeTodos();
+  if (Object.keys(todosStorage).length === 0) {
+    return initializeTodos();
   }
-  return todos;
+  return { ...todosStorage };
 }
 
 export function addTodo(todo: string): void {
@@ -47,6 +43,6 @@ export function deleteTodo(id: string): void {
 }
 
 export function resetTodos(): void {
-  localStorage.removeItem(TODOS_KEY);
+  todosStorage = {};
   initializeTodos();
 }

@@ -3,9 +3,7 @@ import { sleep } from "../lib";
 import { getTodos } from "../todos";
 
 // Todo
-export async function clientLoader({
-  params,
-}: LoaderFunctionArgs): Promise<string> {
+export async function loader({ params }: LoaderFunctionArgs): Promise<string> {
   await sleep();
   let todos = getTodos();
   if (!params.id) {
@@ -20,7 +18,7 @@ export async function clientLoader({
 
 export default function Todo() {
   let params = useParams();
-  let todo = useLoaderData<typeof clientLoader>();
+  let todo = useLoaderData<typeof loader>();
   return (
     <>
       <h2>Nested Todo Route:</h2>

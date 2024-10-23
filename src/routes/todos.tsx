@@ -12,7 +12,7 @@ import { sleep } from "../lib";
 import { addTodo, deleteTodo, getTodos, Todos } from "../todos";
 import { useEffect, useRef, useState } from "react";
 
-export async function clientAction({ request }: ActionFunctionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   await sleep();
 
   let formData = await request.formData();
@@ -38,13 +38,13 @@ export async function clientAction({ request }: ActionFunctionArgs) {
   });
 }
 
-export async function clientLoader(): Promise<Todos> {
+export async function loader() {
   await sleep();
   return getTodos();
 }
 
 export default function TodosList() {
-  let todos = useLoaderData<typeof clientLoader>();
+  let todos = useLoaderData<typeof loader>();
   let navigation = useNavigation();
   let formRef = useRef<HTMLFormElement>(null);
 
