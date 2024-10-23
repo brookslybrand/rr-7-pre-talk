@@ -1,4 +1,4 @@
-import { Scripts, Outlet, ScrollRestoration } from "react-router";
+import { Scripts, Outlet, ScrollRestoration, Links, Meta } from "react-router";
 
 import "./index.css";
 
@@ -9,6 +9,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>React Router - Basic Example</title>
+        <Links />
+        <Meta />
       </head>
       <body>
         {children}
