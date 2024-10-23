@@ -29,10 +29,6 @@ export default defineConfig({
             __dirname,
             "../../packages/react-router/index.ts"
           ),
-          "react-router-dom": path.resolve(
-            __dirname,
-            "../../packages/react-router-dom/index.tsx"
-          ),
         },
       }
     : {},

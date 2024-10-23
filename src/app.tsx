@@ -1,9 +1,9 @@
 import * as React from "react";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router-dom";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import {
   Await,
   createBrowserRouter,
-  defer,
+  data,
   Form,
   Link,
   Outlet,
@@ -17,7 +17,7 @@ import {
   useParams,
   useRevalidator,
   useRouteError,
-} from "react-router-dom";
+} from "react-router";
 
 import type { Todos } from "./todos";
 import { addTodo, deleteTodo, getTodos } from "./todos";
@@ -162,7 +162,7 @@ export async function homeLoader(): Promise<HomeLoaderData> {
 }
 
 export function Home() {
-  let data = useLoaderData() as HomeLoaderData;
+  let data = useLoaderData<typeof homeLoader>();
   return (
     <>
       <h2>Home</h2>
@@ -204,7 +204,7 @@ export async function todosLoader(): Promise<Todos> {
 }
 
 export function TodosList() {
-  let todos = useLoaderData() as Todos;
+  let todos = useLoaderData<typeof todosLoader>();
   let navigation = useNavigation();
   let formRef = React.useRef<HTMLFormElement>(null);
 
@@ -303,7 +303,7 @@ export async function todoLoader({
 
 export function Todo() {
   let params = useParams();
-  let todo = useLoaderData() as string;
+  let todo = useLoaderData<typeof todoLoader>();
   return (
     <>
       <h2>Nested Todo Route:</h2>
@@ -340,7 +340,7 @@ const reject = (d: Error | string, ms: number) =>
   );
 
 export async function deferredLoader() {
-  return defer({
+  return data({
     critical1: await resolve("Critical 1", 250),
     critical2: await resolve("Critical 2", 500),
     lazyResolved: Promise.resolve("Lazy Data immediately resolved - " + rand()),
@@ -352,7 +352,7 @@ export async function deferredLoader() {
 }
 
 export function DeferredPage() {
-  let data = useLoaderData() as DeferredRouteLoaderData;
+  let data = useLoaderData<typeof deferredLoader>();
   return (
     <div>
       {/* Critical data renders immediately */}
